@@ -1,31 +1,29 @@
-import React, {Component} from "react";
+import React, { useState } from 'react';
 import styles from './ContactForm.module.css'
 import propTypes from 'prop-types';
 
-class ContactForm extends Component {
-    state = {
-        name: '',
-        number: '',
-    }
+const ContactForm = ({onSubmit}) => {
+    
+const [name, setName] = useState('');
+const [number, setNumber] = useState('');
 
-
-handleSubmit = e =>  {
+const handleSubmit = e =>  {
   e.preventDefault();
-  this.props.onSubmit(this.state);
-  
-   this.setState({
-     name: '',
-    number: '',})
-   
+  onSubmit({name, number});  
+  setName('');
+  setNumber('');  
 }
 
-handleChange = (e) => {
-  this.setState({[e.target.name]: e.target.value});
+const handleChangeName = (e) => {
+  setName(e.target.value);   
 };
 
-render() {
+const handleChangeNumber = (e) => {  
+  setNumber(e.target.value);  
+};
+
   return(
-     <form className={styles.ContactForm} onSubmit={this.handleSubmit}>
+     <form className={styles.ContactForm} onSubmit={handleSubmit}>
         <h1>Phonebook</h1>
         <label className={styles.label}>
         Name
@@ -33,8 +31,8 @@ render() {
           className={styles.inp}
           type="text"
           name="name"
-          value={this.state.name}
-          onChange={this.handleChange}
+          value={name}
+          onChange={handleChangeName}
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
@@ -46,8 +44,8 @@ render() {
           className={styles.inp}
           type="tel"
           name="number"
-          value={this.state.number}
-          onChange={this.handleChange}
+          value={number}
+          onChange={handleChangeNumber}
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
@@ -60,7 +58,7 @@ render() {
         </button>
       </form>
   )
-}
+
 }
 
 ContactForm.propTypes = {
